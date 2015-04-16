@@ -18,16 +18,22 @@ Options:
 
  * `io` defaults to an empty object. List of [options](https://github.com/Automattic/engine.io#methods-1) to pass to the socket.io server,
  * `cookies` defaults to "true". Determines whether Wsabi should "manage" the session cookies for you - see the note below.
- * `disabledError` is the error returned when a route is attempted to be accessed for which wsabi sockets are disabled. Defaults to a Boom "bad request" error.
+ * `errors` is an object
+    * `required` is the reply sent if sockets are required on the route, but it's accessed over HTTP. Defaults to a `Boom.badRequest` instance.
+    * `disabled` is the reply sent if sockets are disabled on the route and it's attempted to be accessed over sockets. Defaults to a `Boom.badRequest` instance.
 
 After this, you can then connect to your server using any supported client library, including:
 
  * [Sails.io.js](https://github.com/balderdashy/sails.io.js).
  * More to come?
 
-If there's a route you want to disallow Wsabi on, simply pass "enabled: false" as a config option:
+Routes also have their own options that you can pass in the plugin config:
+ * `required` defaults to `false`: setting it to true will cause an error to be sent if the socket is accessed over plain HTTP.
+ * `enabled` defaults to `true`: setting it to false will cause an error to be sent if the socket is accessed over websockets.
+ * `errors` object can be passed in for custom error overrides.
 
 ```js
+// Example of a route with wsabi disabled:
 server.route({
     method: 'GET',
     path: '/',
