@@ -95,6 +95,13 @@ describe('manager', function () {
             expect(headers).to.deep.equal({ cookie: 'a=b; b=q' });
         });
 
+        it('also works with set-cookie', function () {
+              manager.updateCookies({ 'set-cookie': ['b=c'] }, 'set-cookie');
+              var headers = {};
+              manager.syncCookies(headers);
+              expect(headers).to.deep.equal({ cookie: 'a=b; b=c' });
+        });
+
         it('does nothing when cookies disabled', function () {
             manager.config.cookies = false;
             headers = {};
