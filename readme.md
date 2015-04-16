@@ -1,4 +1,4 @@
-![Wsabi](http://i.imgur.com/yBFItmN.png)
+![Wsabi](http://i.imgur.com/pb4uMWM.png)
 
 [![Build Status](https://img.shields.io/travis/MCProHosting/wsabi.svg?style=flat-square)](https://travis-ci.org/MCProHosting/wsabi) [![Coverage Status](https://img.shields.io/coveralls/MCProHosting/wsabi.svg?style=flat-square)](https://coveralls.io/r/MCProHosting/wsabi)
 
