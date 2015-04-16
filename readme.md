@@ -1,5 +1,7 @@
 ![Wsabi](http://i.imgur.com/yBFItmN.png)
 
+[![Build Status](https://img.shields.io/travis/MCProHosting/wsabi.svg?style=flat-square)](https://travis-ci.org/MCProHosting/wsabi) [![Coverage Status](https://img.shields.io/coveralls/MCProHosting/wsabi.svg?style=flat-square)](https://coveralls.io/r/MCProHosting/wsabi)
+
 Wsabi is a layer which allows you to call Hapi http endpoints from websockets, basically serving as a bridge between Socket.io and Hapi's server.inject. It was originally built to be backwards compatible with the [Sails.js](http://sailsjs.org/#!/) websocket system, during a backend port.
 
 ## Usage
@@ -16,6 +18,7 @@ Options:
 
  * `io` defaults to an empty object. List of [options](https://github.com/Automattic/engine.io#methods-1) to pass to the socket.io server,
  * `cookies` defaults to "true". Determines whether Wsabi should "manage" the session cookies for you - see the note below.
+ * `disabledError` is the error returned when a route is attempted to be accessed for which wsabi sockets are disabled. Defaults to a Boom "bad request" error.
 
 After this, you can then connect to your server using any supported client library, including:
 
@@ -34,6 +37,8 @@ server.route({
     // ...
 })
 ```
+
+If you'd like to access the websocket itself in your request, you can access `req.headers['x-wsabi-socket']`. That may also be used for checking if a route is running under websockets.
 
 ### A Note About Sessions
 
