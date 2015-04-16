@@ -1,4 +1,4 @@
-![Wsabi](http://i.imgur.com/ERLVuf7.png)
+![Wsabi](http://i.imgur.com/yBFItmN.png)
 
 Wsabi is a layer which allows you to call Hapi http endpoints from websockets, basically serving as a bridge between Socket.io and Hapi's server.inject. It was originally built to be backwards compatible with the [Sails.js](http://sailsjs.org/#!/) websocket system, during a backend port.
 
@@ -12,7 +12,12 @@ server.register({ register: require('wsabi') }, function (err) {
 });
 ```
 
-You can pass in [config](https://github.com/Automattic/engine.io#methods-1) to the socket.io server by passing in a "io" option object. After this, you can then connect to Wsabi using any supported client library, including:
+Options:
+
+ * `io` defaults to an empty object. List of [options](https://github.com/Automattic/engine.io#methods-1) to pass to the socket.io server,
+ * `cookies` defaults to "true". Determines whether Wsabi should "manage" the session cookies for you - see the note below.
+
+After this, you can then connect to your server using any supported client library, including:
 
  * [Sails.io.js](https://github.com/balderdashy/sails.io.js).
  * More to come?
@@ -24,7 +29,7 @@ server.route({
     method: 'GET',
     path: '/',
     config: {
-        plugins: { wsabi: { enabled: false}}
+        plugins: { wsabi: { enabled: false }}
     }
     // ...
 })
