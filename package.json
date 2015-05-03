@@ -1,6 +1,6 @@
 {
   "name": "wsabi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "HTTP-over-websocket layer for the Hapi web framework.",
   "main": "index.js",
   "scripts": {
