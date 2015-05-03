@@ -108,6 +108,12 @@ describe('manager', function () {
             manager.syncCookies(headers);
             expect(headers).to.deep.equal({});
         });
+
+        it('does not fail on malformed cookie headers', function () {
+          expect(function () {
+            manager.updateCookies({ 'cookie': ['qwert ;yfr fq:$ 02)$gu'] }, 'cookie');
+          }).not.to.throw;
+        });
     });
 
     describe('handling', function () {
