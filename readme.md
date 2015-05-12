@@ -44,7 +44,7 @@ server.route({
 })
 ```
 
-If you'd like to access the websocket itself in your request, you can access `req.headers['x-wsabi-socket']`. That may also be used for checking if a route is running under websockets.
+If you'd like to access the websocket itself in your request, you can access `req.websocket`. That may also be used for checking if a route is running under websockets.
 
 ### A Note About Sessions
 
