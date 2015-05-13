@@ -131,6 +131,7 @@ describe('manager', function () {
             expect(registry[manager.id]).to.equal(manager);
             manager.socket.emit('disconnect');
             sinon.assert.called(handler.close);
+            expect(registry[manager.id]).to.be.undefined;
         });
 
         it('run requests', function () {
