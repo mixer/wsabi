@@ -117,16 +117,18 @@ describe('manager', function () {
     });
 
     describe('handling', function () {
-        var handler;
+        var handler, registry;
         beforeEach(function () {
+            registry = {};
             handler = manager.handler = new EventEmitter();
             manager.handler.close = sinon.stub();
             manager.handler.boot = sinon.stub();
-            manager.boot();
+            manager.boot(registry);
         });
 
         it('boots and closes on disconnect', function () {
             sinon.assert.called(handler.boot);
+            expect(registry[manager.id]).to.equal(manager);
             manager.socket.emit('disconnect');
             sinon.assert.called(handler.close);
         });
@@ -138,7 +140,7 @@ describe('manager', function () {
 
             handler.emit('request', req);
             sinon.assert.calledWith(manager.syncCookies, req.headers);
-            expect(req.headers['x-wsabi-socket']).to.equal(manager.socket);
+            expect(req.headers['x-wsabi-manager']).to.equal(manager.id);
             sinon.assert.calledWith(manager.server.inject, req);
 
             var res = { headers: { 'set-cookie': 'asdf' }};

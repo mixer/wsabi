@@ -1,0 +1,12 @@
+{
+    "env": {
+        "node": true
+    },
+    "rules": {
+        "no-use-before-define": false,
+        "quotes": "single",
+        "strict": false,
+        "curly": "multi",
+        "key-spacing": [2, { "align": "value", "beforeColon": false, "afterColon": true }]
+    }
+}
