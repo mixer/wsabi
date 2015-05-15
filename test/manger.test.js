@@ -4,46 +4,50 @@ var EventEmitter = require('events').EventEmitter;
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
-var sailsHandshake = { headers:
-   { upgrade: 'websocket',
-     connection: 'upgrade',
-     host: 'localhost:1337',
-     'x-forwarded-for': '10.0.2.2',
-     pragma: 'no-cache',
-     'cache-control': 'no-cache',
-     origin: 'http://localhost:1337',
-     'sec-websocket-version': '13',
-     'user-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36',
-     'accept-encoding': 'gzip, deflate, sdch',
-     'accept-language': 'en-US,en;q=0.8',
-     cookie: 'a=b',
-     'sec-websocket-key': 'K+mIoFLBjZ6B8JDbrgsOLA==',
-     'sec-websocket-extensions': 'permessage-deflate; client_max_window_bits' },
-  time: 'Thu Apr 16 2015 12:25:53 GMT+0000 (UTC)',
-  address: '127.0.0.1',
-  xdomain: true,
-  secure: false,
-  issued: 1429187153599,
-  url: '/socket.io/?__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=node&__sails_io_sdk_language=javascript&EIO=3&transport=websocket',
-  query:
-   { __sails_io_sdk_version: '0.11.0',
-     __sails_io_sdk_platform: 'node',
-     __sails_io_sdk_language: 'javascript',
-     EIO: '3',
-     transport: 'websocket' } };
+var sailsHandshake = {
+    headers: {
+        upgrade: 'websocket',
+        connection: 'upgrade',
+        host: 'localhost:1337',
+        'x-forwarded-for': '10.0.2.2',
+        pragma: 'no-cache',
+        'cache-control': 'no-cache',
+        origin: 'http://localhost:1337',
+        'sec-websocket-version': '13',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36',
+        'accept-encoding': 'gzip, deflate, sdch',
+        'accept-language': 'en-US,en;q=0.8',
+        cookie: 'a=b',
+        'sec-websocket-key': 'K+mIoFLBjZ6B8JDbrgsOLA==',
+        'sec-websocket-extensions': 'permessage-deflate; client_max_window_bits'
+    },
+    time: 'Thu Apr 16 2015 12:25:53 GMT+0000 (UTC)',
+    address: '127.0.0.1',
+    xdomain: true,
+    secure: false,
+    issued: 1429187153599,
+    url: '/socket.io/?__sails_io_sdk_version=0.11.0&__sails_io_sdk_platform=node&__sails_io_sdk_language=javascript&EIO=3&transport=websocket',
+    query: {
+        __sails_io_sdk_version: '0.11.0',
+        __sails_io_sdk_platform: 'node',
+        __sails_io_sdk_language: 'javascript',
+        EIO: '3',
+        transport: 'websocket'
+    }
+};
 
 
 describe('manager', function () {
     var Manager = require('../lib/manager');
     var SailsHandler = require('../lib/handlers/sails');
-    var manager;
+    var manager, config;
 
     beforeEach(function () {
         var socket = new EventEmitter();
         socket.handshake = sailsHandshake;
         var server = { inject: sinon.stub() };
-        var config = {};
-        manager = new Manager(server, socket, { cookies: true });
+        config = { cookies: true, sticky: [], strip: [] };
+        manager = new Manager(server, socket, config);
     });
 
     describe('handler selection', function () {
@@ -103,7 +107,7 @@ describe('manager', function () {
         });
 
         it('does nothing when cookies disabled', function () {
-            manager.config.cookies = false;
+            config.cookies = false;
             headers = {};
             manager.syncCookies(headers);
             expect(headers).to.deep.equal({});
@@ -149,5 +153,38 @@ describe('manager', function () {
             sinon.assert.calledWith(manager.updateCookies, res.headers);
             sinon.assert.calledWith(req.callback, res);
         });
+    });
+
+    describe('sticky and strip headers', function () {
+        var handler;
+
+        beforeEach(function () {
+            handler = manager.handler = new EventEmitter();
+            config.sticky = ['x-forwarded-for'];
+            config.strip = ['silly'];
+            manager.handler.boot = sinon.stub();
+            manager.boot({});
+        });
+
+        it('adds sticky headers', function () {
+            var req = { headers: { foo: 'bar' }, payload: {}, route: '/' };
+            handler.emit('request', req);
+            expect(req.headers['x-forwarded-for']).to.equal('10.0.2.2');
+        });
+
+        it('prevents overwrite of sticky headers', function () {
+            var req = { headers: { 'x-forwarded-for': 'lies!' }, payload: {}, route: '/' };
+            handler.emit('request', req);
+            expect(req.headers['x-forwarded-for']).to.equal('10.0.2.2');
+        });
+
+        it('strips headers', function () {
+            var req = { headers: { foo: 'bar' }, payload: {}, route: '/', callback: sinon.stub() };
+            handler.emit('request', req);
+
+            var res = { headers: { 'silly': 'asdf' }};
+            manager.server.inject.yield(res);
+            expect(res.headers.silly).to.be.undefined;
+        })
     });
 });
