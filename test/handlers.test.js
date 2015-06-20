@@ -48,6 +48,14 @@ describe('sails handler', function () {
         });
     });
 
+    it('does not crash when no ACK callback', function (done) {
+        handler.on('request', function (req) {
+            req.callback({ statusCode: 200, headers: { foo: 'bar' }, rawPayload: new Buffer('{"a":42}')});
+            done();
+        });
+        socket.emit('get', { method: 'get', headers: {}, data: {}, url: '/api/v1/users/current?' });
+    });
+
 
     [
         'hola',
