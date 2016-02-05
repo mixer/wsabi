@@ -48,6 +48,8 @@ server.route({
 
 If you'd like to access the websocket itself in your request, you can access `req.websocket`. That may also be used for checking if a route is running under websockets.
 
+You can also access the socket.io server directly after registration via `server.plugins.wsabi.io`.
+
 ### A Note About Sessions
 
 The session "state" is stored on the socket connection. Cookies passed in the initial Socket.io handshake request will be passed on automatically in every request on that socket. If a response includes a `set-cookie` header, we'll update the stored cookie jar, and if you send in a request with a `Cookie` header then the cookie jar will be updated appropriately.
