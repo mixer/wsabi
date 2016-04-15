@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^1.10.3",
+    "eslint": "^2.8.0",
     "eslint-config-airbnb": "^5.0.0",
     "hapi": "^13.0.0",
     "istanbul": "^0.4.2",
