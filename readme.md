@@ -58,7 +58,7 @@ You can disable handling of cookies by passing `cookies: false` in the plugin co
 
 ## License
 
-This software is MIT licensed, copyright 2015 by Beam LLC.
+This software is MIT licensed, copyright 2016 by Beam Interactive, Inc.
 
 #### Why the name?
 
