@@ -68,35 +68,27 @@ describe('manager', function () {
         it('applies stored cookies to header', function () {
             var headers = {};
             manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b'});
+            expect(headers).to.deep.equal({ cookie: 'a=b' });
         });
         it('reads updated cookies', function () {
-            var headers = { cookie: 'b=c'};
+            var headers = { cookie: 'b=c' };
             manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b; b=c' });
+            expect(headers).to.deep.equal({ cookie: 'b=c' });
         });
         it('overwrites cookies', function () {
-            var headers = { cookie: 'a=q'};
+            var headers = { cookie: 'a=q' };
             manager.syncCookies(headers);
             expect(headers).to.deep.equal({ cookie: 'a=q' });
         });
         it('saves updates', function () {
             // once
-            var headers = { cookie: 'b=c'};
+            var headers = { cookie: 'b=c' };
             manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b; b=c' });
+            expect(headers).to.deep.equal({ cookie: 'b=c' });
             // saved them
             headers = {};
             manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b; b=c' });
-            // overwrites them
-            headers = { cookie: 'b=q'};
-            manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b; b=q' });
-            // saves overwrites
-            headers = {};
-            manager.syncCookies(headers);
-            expect(headers).to.deep.equal({ cookie: 'a=b; b=q' });
+            expect(headers).to.deep.equal({ cookie: 'b=c' });
         });
 
         it('also works with set-cookie', function () {
