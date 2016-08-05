@@ -1,6 +1,6 @@
 ![Wsabi](http://i.imgur.com/pb4uMWM.png)
 
-[![Build Status](https://img.shields.io/travis/MCProHosting/wsabi.svg?style=flat-square)](https://travis-ci.org/MCProHosting/wsabi) [![Coverage Status](https://img.shields.io/coveralls/MCProHosting/wsabi.svg?style=flat-square)](https://coveralls.io/r/MCProHosting/wsabi)
+[![Build Status](https://img.shields.io/travis/WatchBeam/wsabi.svg?style=flat-square)](https://travis-ci.org/WatchBeam/wsabi) [![Coverage Status](https://img.shields.io/coveralls/WatchBeam/wsabi.svg?style=flat-square)](https://coveralls.io/r/WatchBeam/wsabi)
 
 Wsabi is a layer which allows you to call Hapi http endpoints from websockets, basically serving as a bridge between Socket.io and Hapi's server.inject. It was originally built to be backwards compatible with the [Sails.js](http://sailsjs.org/#!/) websocket system, during a backend port.
 
