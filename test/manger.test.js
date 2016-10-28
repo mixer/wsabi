@@ -131,11 +131,12 @@ describe('manager', function () {
         });
 
         it('run requests', function () {
-            var req = { headers: { foo: 'bar' }, payload: {}, route: '/', callback: sinon.stub() };
+            var req = { headers: { foo: 'bar' }, payload: {}, route: '/' };
+            var callback = sinon.stub();
             sinon.stub(manager, 'syncCookies');
             sinon.stub(manager, 'updateCookies');
 
-            handler.emit('request', req);
+            handler.emit('request', req, callback);
             sinon.assert.calledWith(manager.syncCookies, req.headers);
             expect(req.headers['x-wsabi-manager']).to.equal(manager.id);
             sinon.assert.calledWith(manager.server.inject, req);
@@ -143,7 +144,7 @@ describe('manager', function () {
             var res = { headers: { 'set-cookie': 'asdf' }};
             manager.server.inject.yield(res);
             sinon.assert.calledWith(manager.updateCookies, res.headers);
-            sinon.assert.calledWith(req.callback, res);
+            sinon.assert.calledWith(callback, res);
         });
     });
 

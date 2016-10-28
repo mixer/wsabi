@@ -35,8 +35,8 @@ describe('sails handler', function () {
     });
 
     it('sends valid responses', function (done) {
-        handler.on('request', function (req) {
-            req.callback({ statusCode: 200, headers: { foo: 'bar' }, rawPayload: new Buffer('{"a":42}')});
+        handler.on('request', function (req, callback) {
+            callback({ statusCode: 200, headers: { foo: 'bar' }, rawPayload: new Buffer('{"a":42}')});
             done();
         });
         socket.emit('get', { method: 'get', headers: {}, data: {}, url: '/api/v1/users/current?' }, function (res) {
@@ -49,8 +49,8 @@ describe('sails handler', function () {
     });
 
     it('does not crash when no ACK callback', function (done) {
-        handler.on('request', function (req) {
-            req.callback({ statusCode: 200, headers: { foo: 'bar' }, rawPayload: new Buffer('{"a":42}')});
+        handler.on('request', function (req, callback) {
+            callback({ statusCode: 200, headers: { foo: 'bar' }, rawPayload: new Buffer('{"a":42}')});
             done();
         });
         socket.emit('get', { method: 'get', headers: {}, data: {}, url: '/api/v1/users/current?' });
