@@ -172,8 +172,9 @@ describe('manager', function () {
         });
 
         it('strips headers', function () {
-            var req = { headers: { foo: 'bar' }, payload: {}, route: '/', callback: sinon.stub() };
-            handler.emit('request', req);
+            var req = { headers: { foo: 'bar' }, payload: {}, route: '/' };
+            var callback = sinon.stub();
+            handler.emit('request', req, callback);
 
             var res = { headers: { 'silly': 'asdf' }};
             manager.server.inject.yield(res);
